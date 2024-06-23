@@ -1,0 +1,20 @@
+SELECT t_users.id,t_users.NIK,t_users.nm_lengkap,t_users.jns_kelamin,
+                                  t_users.alamat,LPAD(t_users.rt,3,"0") AS rt, 
+                                  LPAD(t_users.rw,3,"0") AS rw,t_desa.nm_desa,
+								  IF(MID(DATE_FORMAT(NOW(),"%Y%m%d"),5,2) > MID(t_users.tgl_lahir,6,2),
+									LEFT(DATE_FORMAT(NOW(),"%Y%m%d"),4)-LEFT(t_users.tgl_lahir,4),
+									    
+										
+								  LEFT(DATE_FORMAT(NOW(),"%Y%m%d"),4)-LEFT(t_users.tgl_lahir,4)-1) 
+								  AS umur,
+								  LEFT(DATE_FORMAT(NOW(),"%Y%m%d"),4)-LEFT(t_users.tgl_lahir,4) AS umurcandikurang,
+
+								  LEFT(t_users.tgl_lahir,4) AS ta_lahir,
+								  MID(t_users.tgl_lahir,6,2) AS b_lahir,
+								  RIGHT(t_users.tgl_lahir,2) AS t_lahir,
+       							  MID(DATE_FORMAT(NOW(),"%Y%m%d"),5,2) AS b_post,
+       							  MID(t_users.tgl_lahir,6,2) AS t_post
+FROM t_users,t_desa
+WHERE t_users.id_desa=t_desa.id
+AND t_users.deleted='0'
+ORDER BY t_users.date_created DESC

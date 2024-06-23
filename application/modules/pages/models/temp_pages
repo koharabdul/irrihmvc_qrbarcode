@@ -1,0 +1,59 @@
+SELECT t_pages.id, t_pages.name, t_pages.active, t_personil.nm_lengkap,t_pages.created_by,t_pages.modified_by,
+	(SELECT t_personil.nm_lengkap FROM t_personil
+	 WHERE t_pages.created_by=t_personil.id)AS nmcreat,
+	(SELECT t_personil.nm_lengkap FROM t_personil
+	 WHERE t_pages.modified_by=t_personil.id)AS nmmodif,
+	COUNT(t_pages.id) AS countidpage,
+	t_personil.nm_lengkap,
+	(GROUP_CONCAT(t_personil.nm_lengkap SEPARATOR ', '))AS updater
+FROM t_pages, t_personil
+WHERE (t_pages.created_by=t_personil.id OR t_pages.modified_by=t_personil.id)
+AND t_pages.deleted='0'
+GROUP BY t_pages.id
+ORDER BY t_pages.name ASC
+
+
+
+masih dina perbaikan input multiple
+ public function input_multiple(){
+      $activewe = $this->input->post('active');
+      $name = $this->input->post('name');
+      $uri = $this->input->post('uri');
+      $group = $this->input->post('group');
+      for ($i=0; $i < count($activewe); $i++){
+          $datainput = array(
+              'id' => 'PG-'.get_uuid(),
+              'name' => $name[$i],
+              'uri' => $uri[$i],
+              'date_created' => date('Y-m-d H:i:s')
+           );
+          $this->db->insert('t_pages',$datainput);
+          // $group = $this->input->post('group');
+          // for ($j=0; $j < count($group[$i]); $j++)
+          // {
+          //     $datainputgroup[] = array(
+          //         'page_id' => $datainput['id'],
+          //         'group_id' => $group[$i],
+          //         'created_by' => 'ako',
+          //         'date_created' => date("Y-m-d H:i:s", time())
+          //     );
+          //     $this->db->insert_batch('t_group_pages',$datainputgroup);
+          // }
+
+      }
+      // if($this->db->affected_rows() > 0){
+      //     foreach ($this->input->post('group') as $g) {
+      //         $groupdata[] = array(
+      //             'page_id' => $datainput['id'],
+      //             'group_id' => $g,
+      //             'created_by' => 'ako',
+      //             'date_created' => date("Y-m-d H:i:s", time())
+      //         );
+      //     }
+      //     $this->db->insert_batch('t_group_pages', $groupdata);
+      //     if($this->db->affected_rows() > 0){
+      //         return true;
+      //     }
+      // }
+      // return false;
+  }

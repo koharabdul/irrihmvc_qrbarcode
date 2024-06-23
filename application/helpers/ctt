@@ -1,0 +1,591 @@
+menghitung umur
+SELECT *, YEAR(CURDATE()) – YEAR(tgl_lahir) AS usia FROM umur;
+format currency pada sql
+exp. format( jumlah_uang, 2).
+
+untuk data lebih banyak
+set global net_buffer_length=100000000; 
+set global max_allowed_packet=1000000000;
+
+SELECT 
+	d.id,d.form_id,d.no,IF(c.label!='',label,'Label')label,
+      IF(LEFT(d.id,3)='txt','text',
+      IF(LEFT(d.id,3)='dte','date',
+      IF(LEFT(d.id,3)='opt','option',
+      IF(LEFT(d.id,3)='rad','radio',
+      IF(LEFT(d.id,3)='chx','checkbox',
+      IF(LEFT(d.id,3)='txa','textarea',
+      IF(LEFT(d.id,3)='hid','hidden',
+      IF(LEFT(d.id,3)='fil','file upload',
+      IF(LEFT(d.id,3)='cos','Costume HTML','0')))))))))`type` 
+FROM t_form_detail d
+LEFT JOIN t_form_child_detail c ON d.id=c.id 
+WHERE d.id='txt-313345363-ac343500-5dbd-e199-a45f-eb20ce00c699'
+
+menghilangkan spasi untuk url
+var link = $('#userview').val();
+alert(link);
+
+$('#link').val(link.replace(/\s/g, ''));
+
+
+//menghilangkan spasi di php
+$kalimat = 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.';
+        $text = str_replace(' ', '', $kalimat); // kode untuk menghilangkan spasi
+        var_dump($text);
+
+
+
+SHOW FULL TABLES FROM `irrihmvc` WHERE table_type = 'BASE TABLE'; //menampilkan semua tabel
+
+
+css 
+background-image: url(<?php echo base_url(); ?>assets/img/rails_logo.png);background-repeat:no-repeat;
+
+SELECT m.id,m.name,m.description,m.active,m.date_created,m.created_byname,GROUP_CONCAT(u.user_id)groupuser
+FROM t_managementusers m LEFT JOIN t_manu_users u  ON m.id=u.managementuser_id 
+GROUP BY m.id
+
+SELECT m.id,m.name,m.description,m.active,m.date_created,m.created_byname,GROUP_CONCAT(s.nm_lengkap)groupuser
+FROM t_managementusers m LEFT JOIN t_manu_users u  ON m.id=u.managementuser_id LEFT JOIN t_users s ON u.user_id=s.id
+GROUP BY m.id
+
+SELECT m.id,m.name,GROUP_CONCAT(s.nm_lengkap)groupuser,
+  (SELECT GROUP_CONCAT(us.name) FROM t_userviewmanu_detail ud,t_userview us WHERE m.id= ud.managementuser_id AND ud.userview_id=us.id)eta
+FROM t_managementusers m LEFT JOIN t_manu_users u  ON m.id=u.managementuser_id LEFT JOIN t_users s ON u.user_id=s.id 
+
+GROUP BY m.id 
+
+
+
+
+
+SELECT m.id,m.name,
+  IF(COUNT(s.nm_lengkap)=0,'-',GROUP_CONCAT(s.nm_lengkap))countnmlengkap,
+  (SELECT IF(COUNT(us.name)=0,'-',GROUP_CONCAT('<li>',us.name SEPARATOR '</li>')) 
+    FROM t_userviewmanu_detail ud,t_userview us 
+    WHERE m.id= ud.managementuser_id 
+    AND ud.userview_id=us.id) groupuserview
+FROM t_managementusers m LEFT JOIN t_manu_users u  ON m.id=u.managementuser_id 
+LEFT JOIN t_users s ON u.user_id=s.id 
+WHERE m.deleted='0'
+GROUP BY m.id 
+
+SELECT m.*,
+  IF(COUNT(s.nm_lengkap)=0,'-',CONCAT('<ol>',GROUP_CONCAT('<li>',s.nm_lengkap,'</li>' SEPARATOR ''),'</ol>'))countnmlengkap,
+  (SELECT IF(COUNT(us.name)=0,'-',CONCAT('<ol>',GROUP_CONCAT('<li>',us.name,'</li>' SEPARATOR ''),'</ol>')) 
+    FROM t_userviewmanu_detail ud,t_userview us 
+    WHERE m.id= ud.managementuser_id 
+    AND ud.userview_id=us.id) groupuserview
+FROM t_managementusers m LEFT JOIN t_manu_users u  ON m.id=u.managementuser_id 
+LEFT JOIN t_users s ON u.user_id=s.id 
+WHERE m.deleted='0'
+GROUP BY m.id 
+
+
+
+///////////////////////////////////////////////////////////////////////// fix Template_m -> get_userview()
+SELECT u.*,d.perpage,d.show_numberrow,d.hide_as_permission_on,
+  IF(d.hide_as_permission_on='1',
+    (SELECT n.name
+      FROM t_managementusers n
+      LEFT JOIN t_userviewmanu_detail m ON n.id = m.managementuser_id
+      LEFT JOIN t_manu_users s ON n.id = s.managementuser_id
+      LEFT JOIN t_users t ON s.user_id = t.id
+      WHERE m.userview_id = u.id
+      AND n.deleted='0'
+      AND t.id = 'PER-e474dfce-cfba-0206-bc87-3361b27e64df'
+      ORDER BY n.date_created ASC),
+  '')permissionmanu,
+  IF(d.hide_as_permission_on='1',
+    (SELECT IF(COUNT(n.name) !=0,'','display:none;')
+      FROM t_managementusers n
+      LEFT JOIN t_userviewmanu_detail m ON n.id = m.managementuser_id
+      LEFT JOIN t_manu_users s ON n.id = s.managementuser_id
+      LEFT JOIN t_users t ON s.user_id = t.id
+      WHERE m.userview_id = u.id
+      AND n.deleted='0'
+      AND t.id = 'PER-e474dfce-cfba-0206-bc87-3361b27e64df'
+      ORDER BY n.date_created ASC),
+  '')permissionact,
+  IF(d.hide_as_permission_on='1',
+    (SELECT COUNT(n.name)
+      FROM t_managementusers n
+      LEFT JOIN t_userviewmanu_detail m ON n.id = m.managementuser_id
+      LEFT JOIN t_manu_users s ON n.id = s.managementuser_id
+      LEFT JOIN t_users t ON s.user_id = t.id
+      WHERE m.userview_id = u.id
+      AND n.deleted='0'
+      AND t.id = 'PER-e474dfce-cfba-0206-bc87-3361b27e64df'
+      ORDER BY n.date_created ASC),
+  '')permissioncount
+FROM t_userview u
+LEFT JOIN t_userview_detail d ON u.id=d.id
+ORDER BY u.no ASC
+
+
+untuk direvisi
+SELECT m.id,m.name,m.description,m.active,m.date_created,m.created_byname,
+  IF(m.active='1','<i class=\"fa fa-check text-navy\"></i>','<i class=\"fa fa-times text-danger\"></i>') activeicon,
+  (SELECT IF(COUNT(us.name)=0,'-',
+                        IF(COUNT(us.name)=1,IF(LENGTH(us.name)<12,us.name,CONCAT('<div class=\"panel-group\" id=\"accordion\" style=\"margin-bottom:0px;width:120px;\">
+                            <div class=\"panel panel-default\" style=\"border:none;background: transparent;\">
+                                    <a data-toggle=\"collapse\" data-parent=\"#accordion\" href=\"#',m.id,'s','\">',LEFT(us.name,11),' ...','</a>
+                                <div id=\"',m.id,'s','\" class=\"panel-collapse collapse\">
+                                    <ol style=\"margin-left:-26px;margin-right:-26px;margin-bottom:0px;\">',
+                                        CONCAT('<li>',us.name,'</li>'),'
+                                    </ol>
+                                </div>
+                            </div>
+                        </div>')),
+                        CONCAT('<div class=\"panel-group\" id=\"accordion\" style=\"margin-bottom:0px;width:120px;\">
+                            <div class=\"panel panel-default\" style=\"border:none;background: transparent; \">
+                                    <a data-toggle=\"collapse\" data-parent=\"#accordion\" href=\"#',m.id,'s','\">',LEFT(us.name,11),' ...','</a>
+                                <div id=\"',m.id,'s','\" class=\"panel-collapse collapse\">
+                                <ol style=\"margin-left:-26px;margin-right:-26px;margin-bottom:0px;\">
+                                    
+                                        ',GROUP_CONCAT('<li>',us.name SEPARATOR '</li>'),'
+                                </ol>
+                              </div>
+                            </div>
+                        </div>')
+                        )) FROM t_userviewmanu_detail ud,t_userview us WHERE m.id= ud.managementuser_id AND ud.userview_id=us.id)groupuserview
+FROM t_managementusers m
+LEFT JOIN t_manu_users u ON m.id=u.managementuser_id
+LEFT JOIN t_users s ON u.user_id=s.id
+WHERE m.deleted = '0'
+GROUP BY m.id
+
+
+SELECT u.*,
+  IF(d.hide_as_permission_on='1',
+      (SELECT IF(COUNT(n.name) !=0,'','display:none;')
+    FROM t_managementusers n
+    LEFT JOIN t_userviewmanu_detail m ON n.id = m.managementuser_id
+    LEFT JOIN t_manu_users s ON n.id = s.managementuser_id
+    LEFT JOIN t_users t ON s.user_id = t.id
+    WHERE m.userview_id = u.id
+    AND n.deleted='0'
+    AND n.active = '1'
+    AND t.id = 'PER-44eaa6c4-3f90-8d2e-cb93-c2f093c0ec3b'
+    ORDER BY n.date_created ASC),
+    '')enablepermission
+FROM t_userview u
+LEFT JOIN t_userview_detail d ON u.id=d.id
+
+
+SELECT u.*,
+  IF(d.hide_as_permission_on='1','oke',
+      
+    '')enablepermission
+FROM t_userview u
+LEFT JOIN t_userview_detail d ON u.id=d.id
+LEFT JOIN t_userviewmanu_detail m ON u.id = m.userview_id
+LEFT JOIN t_managementusers s ON m.managementuser_id = s.id
+GROUP BY u.id
+ORDER BY u.no ASC
+
+SELECT u.*,
+  IF(d.hide_as_permission_on='1','oke',
+      
+    '')enablepermission
+FROM t_userview u
+LEFT JOIN t_userview_detail d ON u.id=d.id
+LEFT JOIN t_userviewmanu_detail m ON u.id = m.userview_id
+LEFT JOIN t_managementusers s ON m.managementuser_id = s.id AND s.active = '1'
+LEFT JOIN t_manu_users mn ON s.id = mn.managementuser_id
+LEFT JOIN t_users us ON mn.user_id = us.id AND us.deleted = '0'
+
+GROUP BY u.id
+ORDER BY u.no ASC
+
+
+SELECT u.*,
+  IF(d.hide_as_permission_on='1',IF(s.active='1',IF(us.id = 'PER-44eaa6c4-3f90-8d2e-cb93-c2f093c0ec3b','','display:none;'),''),'')enablepermission
+FROM t_userview u
+LEFT JOIN t_userview_detail d ON u.id=d.id
+LEFT JOIN t_userviewmanu_detail m ON u.id = m.userview_id
+LEFT JOIN t_managementusers s ON m.managementuser_id = s.id 
+LEFT JOIN t_manu_users mn ON s.id = mn.managementuser_id
+LEFT JOIN t_users us ON mn.user_id = us.id AND us.deleted = '0'
+GROUP BY u.id
+ORDER BY u.no ASC
+
+SELECT * 
+FROM `t_userview` u 
+LEFT JOIN t_userview_detail d ON u.id=d.id
+LEFT JOIN t_userviewmanu_detail m ON u.id = m.userview_id
+LEFT JOIN t_managementusers s ON m.managementuser_id = s.id
+LEFT JOIN t_manu_users n ON n.managementuser_id = s.id
+LEFT JOIN t_users us ON n.user_id = us.id
+WHERE us.id = 'PER-44eaa6c4-3f90-8d2e-cb93-c2f093c0ec3b'
+LIMIT 1; 
+
+SELECT IF(d.hide_as_permission_on='1','oke','tak oke')
+FROM t_userview u
+LEFT JOIN t_userview_detail d ON u.id=d.id
+LEFT JOIN t_userviewmanu_detail m ON u.id = m.userview_id
+LEFT JOIN t_managementusers s ON m.managementuser_id = s.id 
+LEFT JOIN t_manu_users mn ON s.id = mn.managementuser_id
+LEFT JOIN t_users us ON mn.user_id = us.id
+WHERE (u.name = 'Dashbords'
+OR u.name = 'dashboards')
+AND 
+us.id = 'PER-44eaa6c4-3f90-8d2e-cb93-c2f093c0ec3b'
+GROUP BY u.id
+ORDER BY u.no ASC
+LIMIT 1
+
+to 
+SELECT IF(d.hide_as_permission_on='1',
+  'oke',
+  'tak oke')
+FROM t_userview u
+LEFT JOIN t_userview_detail d ON u.id=d.id
+LEFT JOIN t_userviewmanu_detail m ON u.id = m.userview_id
+LEFT JOIN t_managementusers s ON m.managementuser_id = s.id 
+LEFT JOIN t_manu_users mn ON s.id = mn.managementuser_id
+LEFT JOIN t_users us ON mn.user_id = us.id
+WHERE (u.name = 'Dashbords'
+OR u.name = 'dashboards')
+ORDER BY u.no ASC
+LIMIT 1
+
+
+
+public function get_activedclass($dataactiveclass){
+        // $checkvalue = $this->checkpermissionon($dataactiveclass);
+        // if($checkvalue['hide_as_permission_on']=='1'){
+            $query = $this->db
+                ->select("u.*")
+                ->from($this->_usv." u")
+                ->join($this->_usvd." d","u.id=d.id","left")
+                ->join($this->_usvdm." m","u.id=m.userview_id","left")
+                ->join($this->_manuuser." s","m.managementuser_id=s.id","left")
+                ->join($this->_tqd." mn","s.id=mn.managementuser_id","left")
+                ->join($this->_tqu." us","mn.user_id=us.id","left")
+                ->where("(u.name='".$dataactiveclass."' or u.name='".strtolower($dataactiveclass)."')")
+                ->where("us.id",$this->session->userdata('id'))
+                ->limit(1)
+                ->get($this->_usv);
+            return $query->row_array();
+        // }
+        // else{
+        //     $query = $this->db
+        //         ->select("u.*")
+        //         ->from($this->_usv." u")
+        //         ->join($this->_usvd." d","u.id=d.id","left")
+        //         ->where("(u.name='".$dataactiveclass."' or u.name='".strtolower($dataactiveclass)."')")
+        //         ->limit(1)
+        //         ->get();
+        //     return $query->row_array();
+        // }
+    }
+    public function checkpermissionon($dataactiveclass){
+        $query = $this->db
+            ->select('d.hide_as_permission_on')
+            ->from($this->_usv. " u")
+            ->join($this->_usvd. " d","u.id=d.id","left")
+            ->where("(u.name='".$dataactiveclass."' or u.name='".strtolower($dataactiveclass)."')")
+            ->limit(1)
+            ->get();
+        return $query->row_array();
+    }
+
+
+
+SELECT u.name, GROUP_CONCAT(n.name) eta
+FROM t_userview u
+LEFT JOIN t_userview_detail d ON u.id = d.id
+LEFT JOIN t_userviewmanu_detail m ON d.id = m.userview_id  
+LEFT JOIN t_managementusers n ON m.managementuser_id = n.id
+GROUP BY u.id
+ORDER BY u.no ASC
+
+
+SELECT u.name, GROUP_CONCAT(n.name) eta,COUNT(n.name) countname,
+  IF(d.hide_as_permission_on='1','hide','')act
+FROM t_userview u
+LEFT JOIN t_userview_detail d ON u.id = d.id
+LEFT JOIN t_userviewmanu_detail m ON d.id = m.userview_id  
+LEFT JOIN t_managementusers n ON m.managementuser_id = n.id
+GROUP BY u.id
+ORDER BY u.no ASC
+
+SELECT u.name, GROUP_CONCAT(n.name) eta,COUNT(n.name) countname,
+  IF(d.hide_as_permission_on='1',GROUP_CONCAT(us.nm_lengkap),'')act
+FROM t_userview u
+LEFT JOIN t_userview_detail d ON u.id = d.id
+LEFT JOIN t_userviewmanu_detail m ON d.id = m.userview_id  
+LEFT JOIN t_managementusers n ON m.managementuser_id = n.id
+LEFT JOIN t_manu_users mn ON mn.managementuser_id = n.id
+LEFT JOIN t_users us ON mn.user_id = us.id
+GROUP BY u.id
+ORDER BY u.no ASC
+
+SELECT u.name, GROUP_CONCAT(n.name) eta,COUNT(n.name) countname,
+  IF(d.hide_as_permission_on='1',GROUP_CONCAT(IF(us.id = 'PER-44eaa6c4-3f90-8d2e-cb93-c2f093c0ec3b',1,'')SEPARATOR ''),'')act
+FROM t_userview u
+LEFT JOIN t_userview_detail d ON u.id = d.id
+LEFT JOIN t_userviewmanu_detail m ON d.id = m.userview_id  
+LEFT JOIN t_managementusers n ON m.managementuser_id = n.id
+LEFT JOIN t_manu_users mn ON mn.managementuser_id = n.id
+LEFT JOIN t_users us ON mn.user_id = us.id
+GROUP BY u.id
+ORDER BY u.no ASC
+
+
+salah keneh
+SELECT u.name, GROUP_CONCAT(n.name) eta,COUNT(n.name) countname,GROUP_CONCAT(us.nm_lengkap)namas,
+  IF(d.hide_as_permission_on='1',IF(COUNT(n.name)='1',IF(us.nm_lengkap='PER-44eaa6c4-3f90-8d2e-cb93-c2f093c0ec3b','','display:none;'),GROUP_CONCAT(IF(us.id = 'PER-44eaa6c4-3f90-8d2e-cb93-c2f093c0ec3b','1','')SEPARATOR '')),'')act
+FROM t_userview u
+LEFT JOIN t_userview_detail d ON u.id = d.id
+LEFT JOIN t_userviewmanu_detail m ON d.id = m.userview_id  
+LEFT JOIN t_managementusers n ON m.managementuser_id = n.id
+LEFT JOIN t_manu_users mn ON mn.managementuser_id = n.id
+LEFT JOIN t_users us ON mn.user_id = us.id
+GROUP BY u.id
+ORDER BY u.no ASC
+
+SELECT u.name, GROUP_CONCAT(n.name) eta,COUNT(n.name) countname,
+  IF(d.hide_as_permission_on='1',GROUP_CONCAT(IF(us.id = 'PER-44eaa6c4-3f90-8d2e-cb93-c2f093c0ec3b','ada','')SEPARATOR ''),'')act
+FROM t_userview u
+LEFT JOIN t_userview_detail d ON u.id = d.id
+LEFT JOIN t_userviewmanu_detail m ON d.id = m.userview_id  
+LEFT JOIN t_managementusers n ON m.managementuser_id = n.id
+LEFT JOIN t_manu_users mn ON mn.managementuser_id = n.id
+LEFT JOIN t_users us ON mn.user_id = us.id
+GROUP BY u.id
+ORDER BY u.no ASC 
+#fix
+
+SELECT u.name, GROUP_CONCAT(n.name) eta,COUNT(n.name) countname,
+  IF(d.hide_as_permission_on='1',GROUP_CONCAT(IF(us.id = 'PER-44eaa6c4-3f90-8d2e-cb93-c2f093c0ec3b','1','')SEPARATOR ''),'')act
+FROM t_userview u
+LEFT JOIN t_userview_detail d ON u.id = d.id
+LEFT JOIN t_userviewmanu_detail m ON d.id = m.userview_id  
+LEFT JOIN t_managementusers n ON m.managementuser_id = n.id
+LEFT JOIN t_manu_users mn ON mn.managementuser_id = n.id
+LEFT JOIN t_users us ON mn.user_id = us.id
+GROUP BY u.id
+ORDER BY u.no ASC
+
+SELECT u.name, IF(d.show_numberrow='1',IF(u.link = 'managementusers',(SELECT COUNT(mn.id) FROM t_managementusers mn WHERE deleted='0'),''),'')shownumbberrow
+FROM t_userview u
+LEFT JOIN t_userview_detail d ON u.id = d.id
+ORDER BY u.no ASC
+at 22:40 PM 25 APRIL 2020
+
+SELECT u.name, IF(d.show_numberrow='1',IF(u.link = 'managementusers',(SELECT COUNT(mn.id) FROM t_managementusers mn WHERE deleted='0'),IF(u.link = 'forms',(SELECT COUNT(id) FROM t_form WHERE deleted='0'),'')),'')shownumbberrow
+FROM t_userview u
+LEFT JOIN t_userview_detail d ON u.id = d.id
+ORDER BY u.no ASC
+at 22:43 PM 25 APRIL 2020
+
+
+
+SELECT 
+(DATE_FORMAT(NOW(),'%Y%m%d')) tahun,
+LEFT(DATE_FORMAT(NOW(),'%Y%m%d'),4)tahunayena,
+MID(DATE_FORMAT(NOW(),'%Y%m%d'),5,2)blnayena,
+RIGHT(DATE_FORMAT(NOW(),'%Y%m%d'),2)tglayena,
+'secat' ieu,
+DATE_FORMAT(tgl_lahir,'%Y%m%d')lahiran,
+LEFT(DATE_FORMAT(tgl_lahir,'%Y%m%d'),4)tahunlahir,
+MID(DATE_FORMAT(tgl_lahir,'%Y%m%d'),5,2)blnlahir,
+RIGHT(DATE_FORMAT(tgl_lahir,'%Y%m%d'),2)tgllahir
+FROM daftarpemilihtetap
+
+at 18 Mei 2020
+
+SELECT nm_lengkap,tgl_lahir,
+(DATE_FORMAT(NOW(),'%Y-%m-%d')) tahun,
+LEFT(DATE_FORMAT(NOW(),'%Y%m%d'),4)tahunayena,
+'-'di,
+LEFT(DATE_FORMAT(tgl_lahir,'%Y%m%d'),4)tahunlahir,
+'='jd,
+(LEFT(DATE_FORMAT(NOW(),'%Y%m%d'),4)-LEFT(DATE_FORMAT(tgl_lahir,'%Y%m%d'),4))hslT,
+CASE
+WHEN ((MID(DATE_FORMAT(NOW(),'%Y%m%d'),5,2))<(MID(DATE_FORMAT(tgl_lahir,'%Y%m%d'),5,2)))
+THEN ((LEFT(DATE_FORMAT(NOW(),'%Y%m%d'),4)-(LEFT(DATE_FORMAT(tgl_lahir,'%Y%m%d'),4))-1))
+ELSE (LEFT(DATE_FORMAT(NOW(),'%Y%m%d'),4)-(LEFT(DATE_FORMAT(tgl_lahir,'%Y%m%d'),4))) END AS age
+FROM daftarpemilihtetap
+at 18 Mei 2020
+
+
+SELECT nm_lengkap,tgl_lahir,
+(DATE_FORMAT(NOW(),'%Y-%m-%d')) tahun,
+LEFT(DATE_FORMAT(NOW(),'%Y%m%d'),4)tahunayena,
+'-'di,
+LEFT(DATE_FORMAT(tgl_lahir,'%Y%m%d'),4)tahunlahir,
+'='jd,
+(LEFT(DATE_FORMAT(NOW(),'%Y%m%d'),4)-LEFT(DATE_FORMAT(tgl_lahir,'%Y%m%d'),4))hslT,
+CASE
+WHEN ((MID(DATE_FORMAT(NOW(),'%Y%m%d'),5,2))<(MID(DATE_FORMAT(tgl_lahir,'%Y%m%d'),5,2)))
+THEN ((LEFT(DATE_FORMAT(NOW(),'%Y%m%d'),4)-(LEFT(DATE_FORMAT(tgl_lahir,'%Y%m%d'),4))-1))
+WHEN (MID(DATE_FORMAT(NOW(),'%Y%m%d'),5,2)=MID(DATE_FORMAT(tgl_lahir,'%Y%m%d'),5,2))
+THEN 'PAS' 
+ELSE (LEFT(DATE_FORMAT(NOW(),'%Y%m%d'),4)-(LEFT(DATE_FORMAT(tgl_lahir,'%Y%m%d'),4))) END AS age
+FROM daftarpemilihtetap
+
+
+fix menghitung umur / usia
+SELECT nm_lengkap,tgl_lahir,
+(DATE_FORMAT(NOW(),'%Y-%m-%d')) tahun,
+LEFT(DATE_FORMAT(NOW(),'%Y%m%d'),4)tahunayena,
+'-'di,
+LEFT(DATE_FORMAT(tgl_lahir,'%Y%m%d'),4)tahunlahir,
+'='jd,
+(LEFT(DATE_FORMAT(NOW(),'%Y%m%d'),4)-LEFT(DATE_FORMAT(tgl_lahir,'%Y%m%d'),4))hslT,
+CASE
+WHEN ((MID(DATE_FORMAT(NOW(),'%Y%m%d'),5,2))<(MID(DATE_FORMAT(tgl_lahir,'%Y%m%d'),5,2)))
+THEN ((LEFT(DATE_FORMAT(NOW(),'%Y%m%d'),4)-(LEFT(DATE_FORMAT(tgl_lahir,'%Y%m%d'),4))-1))
+WHEN (MID(DATE_FORMAT(NOW(),'%Y%m%d'),5,2)=MID(DATE_FORMAT(tgl_lahir,'%Y%m%d'),5,2))
+THEN (CASE
+  WHEN (RIGHT(DATE_FORMAT(NOW(),'%Y%m%d'),2)<RIGHT(DATE_FORMAT(tgl_lahir,'%Y%m%d'),2))
+  THEN ((LEFT(DATE_FORMAT(NOW(),'%Y%m%d'),4)-(LEFT(DATE_FORMAT(tgl_lahir,'%Y%m%d'),4))-1))
+  ELSE ((LEFT(DATE_FORMAT(NOW(),'%Y%m%d'),4)-(LEFT(DATE_FORMAT(tgl_lahir,'%Y%m%d'),4)))) END
+      ) 
+ELSE (LEFT(DATE_FORMAT(NOW(),'%Y%m%d'),4)-(LEFT(DATE_FORMAT(tgl_lahir,'%Y%m%d'),4))) END AS age
+FROM daftarpemilihtetap
+
+
+SELECT a.nm_lengkap,a.nik,
+  (SELECT COUNT(b.no_kk) FROM daftarpemilihtetap b WHERE b.no_kk = a.no_kk GROUP BY b.no_kk)countkk,
+  (SELECT COUNT(b.nik) FROM daftarpemilihtetap b WHERE b.nik = a.nik GROUP BY b.nik)countnik,
+  (SELECT IF(COUNT(b.nik)>1,COUNT(b.nik),'') FROM daftarpemilihtetap b WHERE b.nik = a.nik GROUP BY b.nik)doublenik
+FROM `irrihmvc`.`daftarpemilihtetap` a
+LIMIT 11,10
+
+
+sql catatan terakhir
+UPDATE `irrihmvc`.`banprovtahapiii` 
+SET `terdistribusi`='Belum Tersalurkan',`date_created`='2020-07-04 00:00:38',`modified_by`=NULL,date_modified=NULL,modified_byname=NULL,ket=NULL
+WHERE `nodanom`='32042820134'; 
+
+UPDATE `irrihmvc`.`daftarpemilihtetap` 
+SET `verval`=NULL,`variansi_data`=NULL, date_modified = NULL, modified_by = NULL, modified_byname=NULL WHERE `deleted`='0'; 
+
+
+SELECT a.petugas,a.no_tps,a.jum_kk,jum_laki,IF(variansi_data='Meninggal Dunia',COUNT(b.variansi_data),'')eta
+  
+FROM tps a 
+LEFT JOIN daftarpemilihtetap b ON a.id=b.id_tps
+WHERE a.deleted='0'
+GROUP BY b.id_tps
+ORDER BY a.no_tps ASC
+
+SELECT *,
+  (SELECT COUNT(c.variansi_data)
+    FROM tps a 
+    LEFT JOIN daftarpemilihtetap c ON a.id=c.id_tps
+    WHERE b.id = a.id 
+    AND c.variansi_data='Meninggal Dunia' 
+    GROUP BY a.id)eta
+FROM tps b
+WHERE b.deleted='0'
+ORDER BY b.no_tps ASC
+
+SELECT *,
+  (SELECT COUNT(c.variansi_data)
+    FROM tps a 
+    LEFT JOIN daftarpemilihtetap c ON a.id=c.id_tps
+    WHERE b.id = a.id 
+    AND c.jns_kelamin='L'
+    AND c.verval='TMS'
+    GROUP BY a.id)eta
+FROM tps b
+WHERE b.deleted='0'
+ORDER BY b.no_tps ASC
+
+SELECT b.no_tps,(jum_laki+jum_perempuan)jumlah,
+  ((((SELECT COUNT(c.variansi_data)
+    FROM tps a 
+    LEFT JOIN daftarpemilihtetap c ON a.id=c.id_tps
+    WHERE b.id = a.id 
+    AND c.verval='MS'
+    AND c.variansi_data='Pemilih Cocok'
+    GROUP BY a.id)+
+    (SELECT COUNT(c.variansi_data)
+    FROM tps a 
+    LEFT JOIN daftarpemilihtetap c ON a.id=c.id_tps
+    WHERE b.id = a.id 
+    AND c.verval='MS'
+    AND c.variansi_data='Pemilih Ubah Data'
+    GROUP BY a.id)+
+    (SELECT COUNT(c.variansi_data)
+    FROM tps a 
+    LEFT JOIN daftarpemilihtetap c ON a.id=c.id_tps
+    WHERE b.id = a.id 
+    AND c.verval='TMS'
+    GROUP BY a.id))/(jum_laki+jum_perempuan))*100)ETA
+FROM tps b
+WHERE b.deleted='0'
+ORDER BY b.no_tps ASC
+
+fix
+SELECT b.no_tps,(jum_laki+jum_perempuan)jumlah,
+  CONCAT(ROUND((((SELECT COUNT(c.variansi_data)
+    FROM tps a 
+    LEFT JOIN daftarpemilihtetap c ON a.id=c.id_tps
+    WHERE b.id = a.id 
+    AND c.verval='MS'
+    AND c.variansi_data='Pemilih Cocok'
+    GROUP BY a.id)+
+    (SELECT COUNT(c.variansi_data)
+    FROM tps a 
+    LEFT JOIN daftarpemilihtetap c ON a.id=c.id_tps
+    WHERE b.id = a.id 
+    AND c.verval='MS'
+    AND c.variansi_data='Pemilih Ubah Data'
+    GROUP BY a.id)+
+    (SELECT COUNT(c.variansi_data)
+    FROM tps a 
+    LEFT JOIN daftarpemilihtetap c ON a.id=c.id_tps
+    WHERE b.id = a.id 
+    AND c.verval='TMS'
+    GROUP BY a.id))/(jum_laki+jum_perempuan))*100),'%')ETA
+FROM tps b
+WHERE b.deleted='0'
+ORDER BY b.no_tps ASC
+
+
+
+IFNULL((SELECT COUNT(a.jum_laki)
+    FROM tps a 
+    LEFT JOIN daftarpemilihtetap c ON a.id=c.id_tps
+    WHERE b.id = a.id 
+    AND c.verval='TMS'
+    GROUP BY a.id),0)oe
+
+    SELECT b.no_tps,(jum_laki+jum_perempuan)jumlah,
+  CONCAT(ROUND(((
+   IFNULL((SELECT COUNT(c.variansi_data)
+    FROM tps a 
+    LEFT JOIN daftarpemilihtetap c ON a.id=c.id_tps
+    WHERE b.id = a.id 
+    AND c.verval='MS'
+    AND c.variansi_data='Pemilih Cocok'
+    GROUP BY a.id),0)+
+    IFNULL((SELECT COUNT(c.variansi_data)
+    FROM tps a 
+    LEFT JOIN daftarpemilihtetap c ON a.id=c.id_tps
+    WHERE b.id = a.id 
+    AND c.verval='MS'
+    AND c.variansi_data='Pemilih Ubah Data'
+    GROUP BY a.id),0)+
+    IFNULL((SELECT COUNT(c.variansi_data)
+    FROM tps a 
+    LEFT JOIN daftarpemilihtetap c ON a.id=c.id_tps
+    WHERE b.id = a.id 
+    AND c.verval='TMS'
+    GROUP BY a.id),0))/(jum_laki+jum_perempuan))*100),'%')ETA
+FROM tps b
+WHERE b.deleted='0'
+ORDER BY b.no_tps ASC
+
+SELECT nik,no_kk,nm_lengkap,COUNT(id)doubles
+FROM daftarpemilihtetap
+WHERE deleted='0'
+GROUP BY nik
+HAVING doubles>1

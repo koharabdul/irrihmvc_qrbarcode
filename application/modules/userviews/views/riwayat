@@ -1,0 +1,124 @@
+public function save(){
+        $datacontent = $this->input->post('content');
+        
+        $nomor = 0;
+       
+        // var_dump($datacontent);
+        $arr_kalimat = explode('{', $datacontent);
+        foreach ($arr_kalimat as $vo) {
+            if($vo!='['){
+                if($vo != ','){
+
+                    $arr_kalimat2 = explode(',', $vo);
+                    foreach ($arr_kalimat2 as $k) {
+                        $arrkalimat3 = explode(':', $k);
+                        foreach ($arrkalimat3 as $key) {
+                            if($key!='"name"' and $key !='"icon"' and $key != '"link"'){
+                                $hs = '=>'.$key.',';
+                            }
+                            else{
+                                $hs = $key;
+                            }
+
+                            if(empty($tampil)){
+                                $tampil = $hs;
+                            }
+                            else{
+                                $tampil = $tampil." ".$hs;
+                            }
+
+                        }
+                    }
+                }
+            }
+        }  
+        // var_dump($tampil);
+        $arrkalimat4 = explode('"link"', $tampil);
+        foreach ($arrkalimat4 as $k) {
+            if($k!=''){
+                $arrkalimat5 = explode(' =>[, ',$k);
+                foreach ($arrkalimat5 as $ke) {
+                    if($ke!=''){
+                        $arrkalimat6 = explode(' =>, ',$ke);
+                        foreach ($arrkalimat6 as $key) {
+                            if($key!=''){
+
+                                $hasil = '"link"'.$key;
+
+                                if(substr($hasil, -14)==' =>"children",'){
+                                    $status = "Mamah";
+                                }
+                                else if(substr($hasil, -6)=='}]}]},'){
+                                    $status = "Ayah Level 2";
+                                }
+                                else if(substr($hasil, -4)=='}]},'){
+                                    $status = "Ayah Level 1";
+                                }
+                                else{
+                                    $status = "Anak";
+                                }
+
+                                $final = '"status" => "'.$status.'","no" => "'.$nomor.'",'.$hasil;
+                                $arrkalimat7 = explode(' =>"children",', $final);
+                                foreach ($arrkalimat7 as $keys) {
+                                    if($keys!=''){
+                                        $arrkalimat8 = explode('}]}]},', $keys);
+                                        foreach ($arrkalimat8 as $keyst) {
+                                            if($keyst!=''){
+                                                $mostperfect = $keyst.',';
+                                                $arrkalimat9 = explode('}]},,', $mostperfect);
+                                                foreach ($arrkalimat9 as $a) {
+                                                    if($a!=''){
+                                                        $arrkalimat10 = explode('}],,', $a);
+                                                        foreach ($arrkalimat10 as $b) {
+                                                            if($b!=''){
+                                                                $arrkalimat11 = explode(',,', $b);
+                                                                foreach ($arrkalimat11 as $c) {
+                                                                    if($c!=''){
+                                                                        if(substr($c, -1)==','){
+                                                                            $jmlh = strlen($c)-1;
+                                                                            $fix = substr($c, 0, $jmlh);
+                                                                        }
+                                                                        else{
+                                                                            $fix = $c;
+                                                                        }
+                                                                        var_dump($fix);
+
+                                                                        // $arraykalimat = explode(',', $fix);
+                                                                        // foreach ($arraykalimat as $b) {
+                                                                        //     var_dump($)
+                                                                        // }
+                                                                        // var_dump($arraykalimat);
+                                                                        // $datainput = array(
+                                                                        //     $arraykalimat,
+                                                                        //     "id"               => "Uv-".get_uuid(),
+                                                                        //     "date_created"     => date("Y-m-d H:i:s", time()),
+                                                                        //     "date_modified"    => date("Y-m-d H:i:s", time()),
+                                                                        //     "created_by"       => $this->session->userdata("id"),
+                                                                        //     "modified_by"      => $this->session->userdata("id"),
+                                                                        //     "created_byname"   => $this->session->userdata("nm_lengkap"),
+                                                                        //     "modified_byname"  => $this->session->userdata("nm_lengkap"),
+                                                                        //     "deleted"          => "0"
+                                                                        //  );
+                                                                        
+                                                                        // $this->db->insert("t_userview",$datainput);
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                               
+                            }
+                        }
+                    }
+                }
+            }
+            $nomor++;
+        }
+    }
+    

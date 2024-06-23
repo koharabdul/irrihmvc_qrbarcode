@@ -1,0 +1,27 @@
+<!-- SELECT t_chats.id, GROUP_CONCAT(CONCAT(t_personil.nm_lengkap)SEPARATOR ', ')AS person_chats, 
+	IF(GROUP_CONCAT(t_chats.personil_id)LIKE '%PER-44eaa6c4-3f90-8d2e-cb93-c2f093c0ec3b%',
+		(SELECT GROUP_CONCAT(CONCAT(t_personil.nm_lengkap)SEPARATOR ', ') 
+		FROM t_personil,t_group_chats
+		WHERE t_chats.id=t_group_chats.chat_id
+		AND t_group_chats.deleted='0'
+		AND t_group_chats.chat_from!='PER-44eaa6c4-3f90-8d2e-cb93-c2f093c0ec3b'
+		AND t_group_chats.chat_from=t_personil.id),'0')AS eta
+FROM t_chats, t_personil
+WHERE t_chats.personil_id=t_personil.id
+AND t_chats.deleted='0'
+GROUP BY t_chats.id -->
+
+<!-- SELECT t_chats.id,MAX(t_group_chats.date_created) AS lastdate,MAX(t_group_chats.content)AS lastcontent,
+	IF(GROUP_CONCAT(t_chats.personil_id)LIKE '%PER-44eaa6c4-3f90-8d2e-cb93-c2f093c0ec3b%',
+										(SELECT GROUP_CONCAT(CONCAT(t_personil.nm_lengkap)SEPARATOR ', ') 
+										FROM t_personil,t_group_chats
+										WHERE t_chats.id=t_group_chats.chat_id
+										AND t_group_chats.deleted='0'
+										AND t_group_chats.chat_from!='PER-44eaa6c4-3f90-8d2e-cb93-c2f093c0ec3b'
+										AND t_group_chats.chat_from=t_personil.id),'0')AS optoinchats
+FROM t_chats,t_group_chats,t_personil
+WHERE t_chats.id=t_group_chats.chat_id
+AND t_chats.personil_id='PER-44eaa6c4-3f90-8d2e-cb93-c2f093c0ec3b'
+GROUP BY t_chats.id
+ORDER BY MAX(t_group_chats.date_created) DESC
+LIMIT 1 -->

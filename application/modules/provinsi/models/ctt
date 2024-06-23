@@ -1,0 +1,8 @@
+SELECT t_provinsi.*,
+	(SELECT IF(COUNT(t_kabupaten.id)=0,'',GROUP_CONCAT(CONCAT('<i>',COUNT(t_kabupaten.id),'</i>'))
+	  FROM t_kabupaten
+	  WHERE t_kabupaten.provinsi_id=t_provinsi.id 
+	  AND t_kabupaten.deleted='0') AS jumlah
+FROM t_provinsi
+WHERE t_provinsi.deleted='0'
+ORDER BY t_provinsi.provinsi ASC

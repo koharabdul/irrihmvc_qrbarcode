@@ -1,0 +1,447 @@
+<div class="theme-config">
+    <div class="theme-config-box">
+        <div class="spin-icon">
+            <i class="fa fa-cogs fa-spin"></i>
+        </div>
+        <div class="skin-settings">
+            <div class="title">Configuration <br/>
+
+            <small style="text-transform: none;font-weight: 400">
+                Config box designed for demo purpose. All options available via code.
+                <input type="hidden" name="fixed-nav" id="fixed-nav">
+                <input type="hidden" name="boxed-layout" id="boxed-layout">
+                <input type="hidden" nama="fixed-nav-basic" id="fixed-nav-basic" id="fixed-nav-basic">
+                <input type="hidden" name="fixed-sidebar" id="fixed-sidebar">
+                <input type="hidden" name="mini-navbar" id="mini-navbar">
+                <input type="hidden" name="fixed" id="fixed">
+                <input type="hidden" name="navbar_static_top" id="navbar_static_top">
+
+            </small></div>
+            <div class="setings-item">
+                    <span>
+                        Collapse menu
+                    </span>
+
+                <div class="switch">
+                    <div class="onoffswitch">
+                        <input type="checkbox" name="collapsemenu" class="onoffswitch-checkbox config-themes" id="collapsemenu">
+                        <label class="onoffswitch-label" for="collapsemenu">
+                            <span class="onoffswitch-inner"></span>
+                            <span class="onoffswitch-switch"></span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="setings-item">
+                    <span>
+                        Fixed sidebar
+                    </span>
+
+                <div class="switch">
+                    <div class="onoffswitch">
+                        <input type="checkbox" name="fixedsidebar" class="onoffswitch-checkbox config-themes" id="fixedsidebar">
+                        <label class="onoffswitch-label" for="fixedsidebar">
+                            <span class="onoffswitch-inner"></span>
+                            <span class="onoffswitch-switch"></span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="setings-item">
+                    <span>
+                        Top navbar
+                    </span>
+
+                <div class="switch">
+                    <div class="onoffswitch">
+                        <input type="checkbox" name="fixednavbar" class="onoffswitch-checkbox config-themes" id="fixednavbar">
+                        <label class="onoffswitch-label" for="fixednavbar">
+                            <span class="onoffswitch-inner"></span>
+                            <span class="onoffswitch-switch"></span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="setings-item">
+                    <span>
+                        Top navbar v.2
+                        <br/>
+                        <small>*Primary layout</small>
+                    </span>
+
+                <div class="switch">
+                    <div class="onoffswitch">
+                        <input type="checkbox" name="fixednavbar2" class="onoffswitch-checkbox config-themes" id="fixednavbar2">
+                        <label class="onoffswitch-label" for="fixednavbar2">
+                            <span class="onoffswitch-inner"></span>
+                            <span class="onoffswitch-switch"></span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="setings-item">
+                    <span>
+                        Boxed layout
+                    </span>
+
+                <div class="switch">
+                    <div class="onoffswitch">
+                        <input type="checkbox" name="boxedlayout" class="onoffswitch-checkbox config-themes" id="boxedlayout">
+                        <label class="onoffswitch-label" for="boxedlayout">
+                            <span class="onoffswitch-inner"></span>
+                            <span class="onoffswitch-switch"></span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="setings-item">
+                    <span>
+                        Fixed footer
+                    </span>
+
+                <div class="switch">
+                    <div class="onoffswitch">
+                        <input type="checkbox" name="fixedfooter" class="onoffswitch-checkbox config-themes" id="fixedfooter">
+                        <label class="onoffswitch-label" for="fixedfooter">
+                            <span class="onoffswitch-inner"></span>
+                            <span class="onoffswitch-switch"></span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div id="themeconfig"></div>
+            <!-- <div class="title">Skins</div>
+            <div class="setings-item default-skin">
+                    <span class="skin-name ">
+                         <a href="#" class="s-skin-0 theme-skin">
+                             Default
+                         </a>
+                    </span>
+            </div>
+            <div class="setings-item blue-skin">
+                    <span class="skin-name ">
+                        <a href="#" class="s-skin-1 theme-skin">
+                            Blue light
+                        </a>
+                    </span>
+            </div>
+            <a href="#" class="s-skin-2 theme-skin" >
+                <div class="title">
+                    White
+                </div>
+            </a>
+                        
+                   
+            <div class="setings-item yellow-skin">
+                    <span class="skin-name ">
+                        <a href="#" class="s-skin-3 theme-skin">
+                            Yellow/Purple
+                        </a>
+                    </span>
+            </div>
+            <div class="setings-item ultra-skin">
+                    <span class="skin-name ">
+                        <a href="#" class="md-skin theme-skin">
+                            Material Design
+                        </a>
+                    </span>
+            </div> -->
+        </div>
+    </div>
+</div>
+<script>
+    // Config box
+
+    // Enable/disable fixed top navbar
+
+    $("#themeconfig").load("assets/skin-config.php");
+    $('#fixednavbar').click(function (){
+        if ($('#fixednavbar').is(':checked')){
+            $(".navbar-static-top").removeClass('navbar-static-top').addClass('navbar-fixed-top');
+            $("#navbar_static_top").val('navbar-fixed-top');
+            $("body").removeClass('boxed-layout');
+            $("#boxed-layout").val('');//
+            $("body").addClass('fixed-nav');
+            $("#fixed-nav").val('fixed-nav');
+            $('#boxedlayout').prop('checked', false);
+
+            if (localStorageSupport){
+                localStorage.setItem("boxedlayout",'off');
+            }
+
+            if (localStorageSupport){
+                localStorage.setItem("fixednavbar",'on');
+            }
+        } else{
+            $(".navbar-fixed-top").removeClass('navbar-fixed-top').addClass('navbar-static-top');
+            $("#navbar_static_top").val('navbar-static-top');
+            $("body").removeClass('fixed-nav');
+            $("#fixed-nav").val('');
+            $("body").removeClass('fixed-nav-basic');
+            $("#fixed-nav-basic").val('');
+            $('#fixednavbar2').prop('checked', false);
+
+            if (localStorageSupport){
+                localStorage.setItem("fixednavbar",'off');
+            }
+
+            if (localStorageSupport){
+                localStorage.setItem("fixednavbar2",'off');
+            }
+        }
+    });
+
+    // Enable/disable fixed top navbar
+    $('#fixednavbar2').click(function (){
+        if ($('#fixednavbar2').is(':checked')){
+            $(".navbar-static-top").removeClass('navbar-static-top').addClass('navbar-fixed-top');
+            $("#navbar_static_top").val('navbar-fixed-top');
+            $("body").removeClass('boxed-layout');
+            $("#boxed-layout").val('');
+            $("body").addClass('fixed-nav').addClass('fixed-nav-basic');
+            $("#fixed-nav").val('fixed-nav');
+            $("#fixed-nav-basic").val('fixed-nav-basic');
+            $('#boxedlayout').prop('checked', false);
+
+            if (localStorageSupport){
+                localStorage.setItem("boxedlayout",'off');
+            }
+
+            if (localStorageSupport){
+                localStorage.setItem("fixednavbar2",'on');
+            }
+        } else {
+            $(".navbar-fixed-top").removeClass('navbar-fixed-top').addClass('navbar-static-top');
+            $("#navbar_static_top").val('navbar-static-top');
+            $("body").removeClass('fixed-nav').removeClass('fixed-nav-basic');
+            $("#fixed-nav").val('');
+            $("#fixed-nav-basic").val('');
+            $('#fixednavbar').prop('checked', false);
+
+            if (localStorageSupport){
+                localStorage.setItem("fixednavbar2",'off');
+            }
+            if (localStorageSupport){
+                localStorage.setItem("fixednavbar",'off');
+            }
+        }
+    });
+
+    
+
+    // Enable/disable fixed sidebar
+    $('#fixedsidebar').click(function (){
+        if ($('#fixedsidebar').is(':checked')){
+            $("body").addClass('fixed-sidebar');
+            $("#fixed-sidebar").val('fixed-sidebar');
+            $('.sidebar-collapse').slimScroll({
+                height: '100%',
+                railOpacity: 0.9
+            });
+
+            if (localStorageSupport){
+                localStorage.setItem("fixedsidebar",'on');
+            }
+        } else{
+            $('.sidebar-collapse').slimscroll({destroy: true});
+            $('.sidebar-collapse').attr('style', '');
+            $("body").removeClass('fixed-sidebar');
+            $("#fixed-sidebar").val('');
+
+            if (localStorageSupport){
+                localStorage.setItem("fixedsidebar",'off');
+            }
+        }
+    });
+
+    // Enable/disable collapse menu
+    $('#collapsemenu').click(function (){
+        if ($('#collapsemenu').is(':checked')){
+            $("body").addClass('mini-navbar');
+            $("#mini-navbar").val('mini-navbar');
+            SmoothlyMenu();
+
+            if (localStorageSupport){
+                localStorage.setItem("collapse_menu",'on');
+            }
+
+        } else{
+            $("body").removeClass('mini-navbar');
+            $("#mini-navbar").val('');
+            SmoothlyMenu();
+
+            if (localStorageSupport){
+                localStorage.setItem("collapse_menu",'off');
+            }
+        }
+    });
+
+    // Enable/disable boxed layout
+    $('#boxedlayout').click(function (){
+        if ($('#boxedlayout').is(':checked')){
+            $("body").addClass('boxed-layout');
+            $("#boxed-layout").val('boxed-layout');
+            $('#fixednavbar').prop('checked', false);
+            $('#fixednavbar2').prop('checked', false);
+            $(".navbar-fixed-top").removeClass('navbar-fixed-top').addClass('navbar-static-top');
+            $("#navbar_static_top").val('navbar-static-top');
+            $("body").removeClass('fixed-nav');
+            $("#fixed-nav").val('');
+            $("body").removeClass('fixed-nav-basic');
+            $("#fixed-nav-basic").val('');
+            $(".footer").removeClass('fixed');
+            $("#fixed").val('');
+            $('#fixedfooter').prop('checked', false);
+
+            if (localStorageSupport){
+                localStorage.setItem("fixednavbar",'off');
+            }
+
+            if (localStorageSupport){
+                localStorage.setItem("fixednavbar2",'off');
+            }
+
+            if (localStorageSupport){
+                localStorage.setItem("fixedfooter",'off');
+            }
+
+
+            if (localStorageSupport){
+                localStorage.setItem("boxedlayout",'on');
+            }
+        } else{
+            $("body").removeClass('boxed-layout');
+            $("#boxed-layout").val('');
+
+            if (localStorageSupport){
+                localStorage.setItem("boxedlayout",'off');
+            }
+        }
+    });
+
+    // Enable/disable fixed footer
+    $('#fixedfooter').click(function (){
+        if ($('#fixedfooter').is(':checked')){
+            $('#boxedlayout').prop('checked', false);
+            $("body").removeClass('boxed-layout');
+            $("#boxed-layout").val('');
+            $(".footer").addClass('fixed');
+            $("#fixed").val('fixed');
+
+            if (localStorageSupport){
+                localStorage.setItem("boxedlayout",'off');
+            }
+
+            if (localStorageSupport){
+                localStorage.setItem("fixedfooter",'on');
+            }
+        } else{
+            $(".footer").removeClass('fixed');
+            $("#fixed").val('');
+
+            if (localStorageSupport){
+                localStorage.setItem("fixedfooter",'off');
+            }
+        }
+    });
+
+    // SKIN Select
+    $('.spin-icon').click(function (){
+        $(".theme-config-box").toggleClass("show");
+    });
+
+    // Default skin
+    // $('.s-skin-0').click(function (){
+    //     $("body").removeClass("skin-1");
+    //     $("body").removeClass("skin-2");
+    //     $("body").removeClass("skin-3");
+    //     $("body").removeClass("md-skin");
+    //     /////////////////////////////////////
+    //     $("#body").val("");
+    // });
+
+    // // Blue skin
+    // $('.s-skin-1').click(function (){
+    //     $("body").removeClass("skin-2");
+    //     $("body").removeClass("skin-3");
+    //     $("body").removeClass("md-skin");
+    //     $("body").addClass("skin-1");
+    //     /////////////////////////////////////
+    //     $("#body").val("skin-1");
+    // });
+
+    // // Inspinia ultra skin
+    // $('.s-skin-2').click(function (){
+    //     $("body").removeClass("skin-1");
+    //     $("body").removeClass("skin-3");
+    //     $("body").removeClass("md-skin");
+    //     $("body").addClass("skin-2");
+    //     /////////////////////////////////////
+    //     $("#body").val("skin-2");
+    // });
+
+    // // Yellow skin
+    // $('.s-skin-3').click(function (){
+    //     $("body").removeClass("skin-1");
+    //     $("body").removeClass("skin-2");
+    //     $("body").removeClass("md-skin");
+    //     $("body").addClass("skin-3");
+    //     /////////////////////////////////////
+    //     $("#body").val("skin-3");
+    // });
+
+    // $('.md-skin').click(function (){
+    //     $("body").removeClass("skin-1");
+    //     $("body").removeClass("skin-2");
+    //     $("body").removeClass("skin-3");
+    //     $("body").addClass("md-skin");
+    //     /////////////////////////////////////
+    //     $("#body").val("md-skin");
+    // });
+    // $('.theme-skin').click(function(){
+    //    var theme = $("#body").val();
+    // });
+
+    if (localStorageSupport){
+        var collapse = localStorage.getItem("collapse_menu");
+        var fixedsidebar = localStorage.getItem("fixedsidebar");
+        var fixednavbar = localStorage.getItem("fixednavbar");
+        var fixednavbar2 = localStorage.getItem("fixednavbar2");
+        var boxedlayout = localStorage.getItem("boxedlayout");
+        var fixedfooter = localStorage.getItem("fixedfooter");
+        $("#navbar_static_top").val('navbar-static-top');
+
+
+        if (collapse == 'on'){
+            $('#collapsemenu').prop('checked','checked')
+            $("#mini-navbar").val('mini-navbar')
+        }
+        if (fixedsidebar == 'on'){
+            $('#fixedsidebar').prop('checked','checked')
+            $("#fixed-sidebar").val('fixed-sidebar')
+        }
+        if (fixednavbar == 'on'){
+            $('#fixednavbar').prop('checked','checked')
+            $("#fixed-nav").val('fixed-nav')
+            $("#navbar_static_top").val('navbar-fixed-top')
+        }
+        if (fixednavbar2 == 'on'){
+            $('#fixednavbar2').prop('checked','checked')
+            $("#fixed-nav-basic").val('fixed-nav-basic')
+            $("#navbar_static_top").val('navbar-fixed-top')
+        }
+        if (boxedlayout == 'on'){
+            $('#boxedlayout').prop('checked','checked')
+            $("#boxed-layout").val('boxed-layout')
+            $("#navbar_static_top").val('navbar-static-top')
+        }
+        if (fixedfooter == 'on') {
+            $('#fixedfooter').prop('checked','checked')
+            $("#fixed").val('fixed')
+        }
+    }
+
+    
+
+    
+</script>
